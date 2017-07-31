@@ -1,23 +1,26 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
+const path = require("path");
 
 module.exports = {
     entry: {
         bundle: "./src/index.js"
     },
     output: {
-        path: __dirname + "/../build",
+        path: path.join(__dirname, "/../build"),
+        publicPath: "/",
         filename: "static/js/[name].[hash:8].js"
     },
     module: {
         rules: [
             {
-            enforce: "pre",
-            test: /\.jsx?$/,
-            exclude: /node_modules/,
-            loader: "eslint-loader",
-            options: {
-                configFile: "./eslintrc.json"
+                enforce: "pre",
+                test: /\.jsx?$/,
+                exclude: /node_modules/,
+                loader: "eslint-loader",
+                options: {
+                    configFile: "./eslintrc.json"
+                }
             },
             {
                 test: /\.jsx?$/,
@@ -25,7 +28,7 @@ module.exports = {
                 loader: "babel-loader"
             },
             {
-                test: /\.jsx$?/,
+                test: /\.jsx?$/,
                 loader: "source-map-loader"
             },
             {
@@ -51,8 +54,9 @@ module.exports = {
     devServer: {
         port: 3000,
         compress: true,
-        contentBase: __dirname + "../build",
+        contentBase: path.join(__dirname, "../build"),
         watchContentBase: true,
-        hot: true
+        hot: true,
+        historyApiFallback: true
     }
 }
